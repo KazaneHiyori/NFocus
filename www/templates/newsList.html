@@ -1,0 +1,19 @@
+<ion-content class="newsList scroll-content" on-swipe-up="onSwipeUp()" on-swipe-down="onSwipeDown()" on-swipe-left="onSwipeLeft()" on-swipe-right="onSwipeRight()">
+	<ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
+	
+	<div class="contentionic-pseudo ">
+		<div class="list">
+			
+			<!-- href="#/newsList/{{channelId}}/{{$index}}"-->
+			
+			<a ng-click="changeNew(channelId,new.pageIndex,new.title)" ng-if="new.allList.length>1" class="item item-thumbnail-right widthFit {{nightMode?'bgLightLightBrown':''}}" ng-repeat="new in newsList|filter:search" data-pageNum="{{new.pageIndex}}" data-title="{{new.title}}" menu-toggle="right" >
+				<img ng-if="new.havePic" ng-src="{{new.imageurls[0].url}}" />
+				<h2 class="{{new.havePic?'':'widthExtra'}}">{{new.title}}</h2>
+				<p class="{{new.havePic?'':'widthExtra'}}">{{new.allList|cut}}</p>
+			</a>
+		</div>
+	</div>
+	
+	<ion-infinite-scroll ng-if="!noMorePage" immediate-check="false" on-infinite="loadMore()" distance="1%">
+	</ion-infinite-scroll>
+</ion-content>
