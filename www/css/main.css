@@ -25,7 +25,14 @@ ul {
 	url('../font/ruizibige.svg#ruizibige') format('svg');
 	/*Legacy iOS*/
 }
-
+/*左侧滑*/
+.leftAssertive{
+	background: #ef473a;
+	opacity: 0.9;
+}
+.leftBrown {
+	background: #907b66;
+}
 
 /*头部*/
 
@@ -332,4 +339,11 @@ footer.footer .lineHeight .fontWhite {
 	/* Chrome10+,Safari5.1+ */
 	background: linear-gradient(to right, #907b66 0%, #faf8ef 25%);
 	/* W3C */
+}
+.s.fontcolor{
+	color: #ef473a;
+
+}
+.n.fontcolor {
+	color: #907b66;
 }
