@@ -13,12 +13,11 @@
 	}]);
 	app.controller("allCtrl", function($scope, $rootScope) {
 		//定义一个控制侧滑菜单隐/现的变量
-		$rootScope.displayRight =$rootScope.displayLeft =true;
+		$rootScope.displayRight = $rootScope.displayLeft = true;
 		//广播监听
-		$scope.$on('to-parentSearch', function(event,data) {
-	        $scope.$broadcast('to-headSearch', data);//父级能得到值
-	    });
-	    
+		$scope.$on('to-parentSearch', function(event, data) {
+			$scope.$broadcast('to-headSearch', data); //父级能得到值
+		});
 	});
 	//主页头部-------------------------------------------------------------------
 	app.controller("headCtrl", function($scope, $http, $rootScope, $state, $window, $document) {
@@ -27,28 +26,28 @@
 		//		$rootScope.channelId = $state.params.channelId;
 		//		console.log($state.params.channelId,$rootScope.channelId);
 		$scope.searchChange = function() {
-			$rootScope.search = $scope.search;
-			//此时，已代表搜索文本框内容发生了改变，我们需要定义一个全局变量，储存检测筛选过后显示的新闻条数是否铺满了屏幕，若未铺满，应触发加载更多的函数(或让它默认继续加载解决筛选结果不满屏不自动加载的问题)
-			$rootScope.loadMore();
-		}
-		//按小×，search框文本清空
+				$rootScope.search = $scope.search;
+				//此时，已代表搜索文本框内容发生了改变，我们需要定义一个全局变量，储存检测筛选过后显示的新闻条数是否铺满了屏幕，若未铺满，应触发加载更多的函数(或让它默认继续加载解决筛选结果不满屏不自动加载的问题)
+				$rootScope.loadMore();
+			}
+			//按小×，search框文本清空
 		$scope.searchClear = function() {
 
-			$rootScope.search = $scope.search='';
-		}
-		//		console.log("头");
-		//定义一个控制夜间模式的变量
+				$rootScope.search = $scope.search = '';
+			}
+			//		console.log("头");
+			//定义一个控制夜间模式的变量
 		$rootScope.nightMode = false;
-		
+
 		//定义logo点击会弹出并显示左侧滑菜单栏
-		$scope.leftShow = function(){
-			$rootScope.displayLeft = !$rootScope.displayLeft;
-			$rootScope.displayRight = true;
-		}
-		//头部监听关于搜索文本的广播
-		$scope.$on('to-headSearch', function(event,data) {
-	        $scope.search=data;//子级能得到值
-	    });
+		$scope.leftShow = function() {
+				$rootScope.displayLeft = !$rootScope.displayLeft;
+				$rootScope.displayRight = true;
+			}
+			//头部监听关于搜索文本的广播
+		$scope.$on('to-headSearch', function(event, data) {
+			$scope.search = data; //子级能得到值
+		});
 	});
 	app.directive('swiperItem', function() {
 			return {
@@ -64,10 +63,8 @@
 			}
 		})
 		//主页中部--------------------------------------------------------------------------------
-	app.controller("newsListCtrl", function($scope, $location,$rootScope,$window, $http, $state, $ionicSideMenuDelegate, $ionicBackdrop) {
-		
-		
-		
+	app.controller("newsListCtrl", function($scope, $location, $rootScope, $window, $http, $state, $ionicSideMenuDelegate, $ionicBackdrop) {
+
 		//定义一个首次加载时的loading动画,只有第一次初始化或发生频道切换时为真
 		$rootScope.loading = true;
 
@@ -76,49 +73,47 @@
 
 		$scope.pageNum = 1;
 		$scope.newsList = [];
-		
-		
-		
+
 		//设置在中间部位的滑动事件
 		$scope.onSwipeLeft = function() {
-			if($rootScope.channelIndex>=$rootScope.channels.length-1){
+			if ($rootScope.channelIndex >= $rootScope.channels.length - 1) {
 				return;
 			}
-//			//搜索文本初始化
-//			$rootScope.search = "";
+			//			//搜索文本初始化
+			//			$rootScope.search = "";
 			//频道序标+1
 			$rootScope.channelIndex++;
 			//如果大于下标为2的导航标签,则footer中的导航要右移一格
-			if($rootScope.channelIndex>2&&$rootScope.channelIndex<$rootScope.channels.length-3){
+			if ($rootScope.channelIndex > 2 && $rootScope.channelIndex < $rootScope.channels.length - 3) {
 				console.log($rootScope.channelIndex);
-				$rootScope.footOffset = -($rootScope.channelIndex-1)*(($window.innerWidth-40)/3)+"px";
-				
+				$rootScope.footOffset = -($rootScope.channelIndex - 1) * (($window.innerWidth - 40) / 3) + "px";
+
 			}
 			//与下面的$window.location用法区别展示
-			$location.url("/newsList/"+$rootScope.channels[$rootScope.channelIndex].channelId+"/"+Math.random()*10000);//加入随机数字为了跳转链接时不会读取缓存,使得页面切换的方向保持一致
-			
+			$location.url("/newsList/" + $rootScope.channels[$rootScope.channelIndex].channelId + "/" + Math.random() * 10000); //加入随机数字为了跳转链接时不会读取缓存,使得页面切换的方向保持一致
+
 		};
 		$scope.onSwipeRight = function() {
-			if($rootScope.channelIndex==0){
+			if ($rootScope.channelIndex == 0) {
 				return;
 			}
-//			//搜索文本初始化
-//			$rootScope.search = "";
+			//			//搜索文本初始化
+			//			$rootScope.search = "";
 			//频道序标-1
 			$rootScope.channelIndex--;
 			//如果大于下标为2的导航标签,则footer中的导航要右移一格
-			if($rootScope.channelIndex>0&&$rootScope.channelIndex<$rootScope.channels.length-3){
-				
-				$rootScope.footOffset = -($rootScope.channelIndex-1)*(($window.innerWidth-40)/3)+"px";
-				
+			if ($rootScope.channelIndex > 0 && $rootScope.channelIndex < $rootScope.channels.length - 3) {
+
+				$rootScope.footOffset = -($rootScope.channelIndex - 1) * (($window.innerWidth - 40) / 3) + "px";
+
 			}
 			//与上面的$location用法区别展示
-			$window.location.href="#/newsList/"+$rootScope.channels[$rootScope.channelIndex].channelId+"/"+Math.random()*10000;//加入随机数字为了跳转链接时不会读取缓存,使得页面切换的方向保持一致
+			$window.location.href = "#/newsList/" + $rootScope.channels[$rootScope.channelIndex].channelId + "/" + Math.random() * 10000; //加入随机数字为了跳转链接时不会读取缓存,使得页面切换的方向保持一致
 		};
 
 		//新闻列表的获取
 		$scope.newsListLoad = function() {
-			
+
 			$rootScope.channelId = $state.params.channelId;
 			//console.log($state.params.channelId,$rootScope.channelId+"     中部");
 
@@ -157,16 +152,16 @@
 					$scope.noMorePage = true; //禁止滚动触发时间
 
 				};
-				
+
 				//更新channelIndex的值
-					
-					for (var i=0;i<$rootScope.channels.length;i++) {
-						if($state.params.channelId == $rootScope.channels[i].channelId){
-							$rootScope.channelIndex= i;
-							console.log($rootScope.channelIndex)
-						}
+
+				for (var i = 0; i < $rootScope.channels.length; i++) {
+					if ($state.params.channelId == $rootScope.channels[i].channelId) {
+						$rootScope.channelIndex = i;
+						console.log($rootScope.channelIndex)
 					}
-		
+				}
+
 			}).finally(function() {
 				$scope.$broadcast('scroll.refreshComplete');
 				$scope.$broadcast('scroll.infiniteScrollComplete');
@@ -201,8 +196,8 @@
 			//在获取新闻详情的同时,创建随机的喜欢值和评论值
 			$rootScope.like = parseInt(Math.random() * 500);
 			//初始化未评论和未点赞
-			$rootScope.likeAdd=$rootScope.commentAdd=$rootScope.collectAdd=false;
-			
+			$rootScope.likeAdd = $rootScope.commentAdd = $rootScope.collectAdd = false;
+
 			$rootScope.comment = parseInt(Math.random() * 500);
 
 			//关于详情页内容的ajax请求
@@ -256,7 +251,7 @@
 	//主页尾部-------------------------------------------------------------------
 	//新闻列表页控制器选项卡频道数组的
 	app.controller("footCtrl", function($scope, $rootScope, $http, $state) {
-		
+
 		//console.log("脚");
 		//		$rootScope.channelId = $state.params.channelId;
 		//		console.log($rootScope.channelId);
@@ -269,7 +264,7 @@
 				}
 			}).success(function(data) {
 				$rootScope.channels = data.showapi_res_body.channelList;
-				$rootScope.channelIndex=0;
+				$rootScope.channelIndex = 0;
 			});
 		}
 		$scope.channelList();
@@ -279,47 +274,75 @@
 			$rootScope.nightMode = !$rootScope.nightMode
 
 		}
-		$scope.random = Math.random()*10000;
-//		//搜索文本初始化
-//		
-			$scope.searchInit=function(){
-				$rootScope.displayLeft = $rootScope.displayRight = true;
-				$rootScope.search = '';
-				$scope.$emit('to-parentSearch', '');
-			};
+		$scope.random = Math.random() * 10000;
+		//		//搜索文本初始化
+		//		
+		$scope.searchInit = function() {
+			$rootScope.displayLeft = $rootScope.displayRight = true;
+			$rootScope.search = '';
+			$scope.$emit('to-parentSearch', '');
+		};
 	});
 	//左侧滑菜单---------------------------------------------------------------
 	app.controller("settingCtrl", function($scope, $rootScope, $ionicPopup, $window) { //$timeout
-		
+
 		//定义菜单宽度为70%
-		$scope.width = screen.width*0.7;
+		$scope.width = screen.width * 0.7;
 		//$scope.width = $window.innerWidth;
 		console.log($scope.width);
-		
+
 		//定义左侧滑菜单所需的数据和图标数组
-		$scope.settingList=[
-		{text:"登录/注册",icon:"ion-social-octocat",borderStyle:"border:0;border-bottom:1px solid rgba(255,255,255,0.3)"},
-		{text:"WiFi联网",icon:"ion-social-rss",borderStyle:"border:0"},
-		{text:"字体大小",icon:"iconfont icon-baiyangzuo",borderStyle:"border:0"},
-		{text:"收藏列表",icon:"iconfont icon-juxiezuo",borderStyle:"border:0"},
-		{text:"推送设置",icon:"iconfont icon-mojiezuo",borderStyle:"border:0"},
-		{text:"关于我们",icon:"iconfont icon-sheshouzuo",borderStyle:"border:0"},
-		{text:"公众平台",icon:"iconfont icon-shizizuo",borderStyle:"border:0"},
-		{text:"免责声明",icon:"iconfont icon-shuangyuzuo",borderStyle:"border:0"},
-		{text:"检查更新",icon:"iconfont icon-tianchengzuo",borderStyle:"border:0"},
-		{text:"退出",icon:"iconfont icon-guanbi",borderStyle:"border:0;border-top:1px solid rgba(255,255,255,0.3)"}];
-		
-		
-		
+		$scope.settingList = [{
+			text: "登录/注册",
+			icon: "ion-social-octocat",
+			borderStyle: "border:0;border-bottom:1px solid rgba(255,255,255,0.3)"
+		}, {
+			text: "WiFi联网",
+			icon: "ion-social-rss",
+			borderStyle: "border:0"
+		}, {
+			text: "字体大小",
+			icon: "iconfont icon-baiyangzuo",
+			borderStyle: "border:0"
+		}, {
+			text: "收藏列表",
+			icon: "iconfont icon-juxiezuo",
+			borderStyle: "border:0"
+		}, {
+			text: "推送设置",
+			icon: "iconfont icon-mojiezuo",
+			borderStyle: "border:0"
+		}, {
+			text: "关于我们",
+			icon: "iconfont icon-sheshouzuo",
+			borderStyle: "border:0"
+		}, {
+			text: "公众平台",
+			icon: "iconfont icon-shizizuo",
+			borderStyle: "border:0"
+		}, {
+			text: "免责声明",
+			icon: "iconfont icon-shuangyuzuo",
+			borderStyle: "border:0"
+		}, {
+			text: "检查更新",
+			icon: "iconfont icon-tianchengzuo",
+			borderStyle: "border:0"
+		}, {
+			text: "退出",
+			icon: "iconfont icon-guanbi",
+			borderStyle: "border:0;border-top:1px solid rgba(255,255,255,0.3)"
+		}];
+
 		//点击返回,让侧滑菜单隐藏
 		$scope.changeDisplay = function() {
 			$rootScope.displayLeft = true;
-			$rootScope.displayRight= true;
+			$rootScope.displayRight = true;
 		}
 
 	});
 	//右侧滑菜单---------------------------------------------------------------
-	app.controller("detailCtrl", function($scope, $rootScope, $ionicPopup, $window,$timeout) { //
+	app.controller("detailCtrl", function($scope, $rootScope, $ionicPopup, $window, $timeout) { //
 		//单向数据绑定到detail页面,detailCtrl中没有寻找到$scope.newDetail,会向上寻找$rootScope.newDetail的值然后单向绑定到detail页面
 
 		//定义菜单宽度为满屏
@@ -328,28 +351,23 @@
 		//console.log($scope.width);
 		//点击返回,让侧滑菜单隐藏
 		$scope.changeDisplay = function() {
-			$rootScope.displayRight  = true;
+			$rootScope.displayRight = true;
 			$rootScope.displayLeft = true;
 			$scope.removeBig();
 		}
-		
-		
-		
-		
-		
+
 		//点击图片,弹出背景,图片会放大
-		$scope.showBig = function(src){
-		
-			$scope.show= true;
-			$scope.imgUrl=src;
+		$scope.showBig = function(src) {
+
+			$scope.show = true;
+			$scope.imgUrl = src;
 		};
 		//点击图片,弹出背景,图片会放大
-		$scope.removeBig = function(){
-		
-			$scope.show= false;
+		$scope.removeBig = function() {
+
+			$scope.show = false;
 		}
-		
-		
+
 		// Triggered on a button click, or some other target
 		$scope.commented = function(a) {
 			if ($rootScope.commentAdd) {
@@ -385,7 +403,7 @@
 							//don't allow the user to close unless he enters wifi password
 							e.preventDefault();
 						} else {
-							$rootScope.commentAdd=true;
+							$rootScope.commentAdd = true;
 							$rootScope.comment = a + 1;
 							return $scope.data.comment;
 						}
@@ -414,7 +432,6 @@
 			});
 		};
 
-		
 		$scope.liked = function(a) {
 			if ($rootScope.likeAdd) {
 				$scope.likeAlert = function() {
@@ -434,17 +451,17 @@
 			var alertPopup = $ionicPopup.show({
 				title: '<b>你 刚 刚 点 了 一 个 赞</b>',
 				template: '<div style="text-align:center">It‘s your delicious</div>',
-//				okType: 'button-balanced'
+				//				okType: 'button-balanced'
 			});
 			alertPopup.then(function(res) {
-				$rootScope.likeAdd=true;
+				$rootScope.likeAdd = true;
 				$rootScope.like = a + 1;
 			});
 			$timeout(function() {
-		      alertPopup.close(); // 1.3秒后关闭弹窗
-		   }, 1300);
+				alertPopup.close(); // 1.3秒后关闭弹窗
+			}, 1300);
 		};
-$scope.collect = function() {
+		$scope.collect = function() {
 			if ($rootScope.collectAdd) {
 				$scope.collectAlert = function() {
 					var alertPopup = $ionicPopup.alert({
@@ -465,13 +482,13 @@ $scope.collect = function() {
 				template: '<div style="text-align:center">You just collectAdd this item</div>'
 			});
 			alertPopup.then(function(res) {
-				$rootScope.collectAdd=true;
+				$rootScope.collectAdd = true;
 			});
 			$timeout(function() {
-		      alertPopup.close(); // 1.$add1秒后关闭弹窗
-		   }, 1300);
+				alertPopup.close(); // 1.$add1秒后关闭弹窗
+			}, 1300);
 		};
-	
+
 	});
 	//定义一个筛选allList中图片的过滤器
 

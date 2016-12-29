@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+
+	</head>
+
+	<body>
+		<ul>
+			<li style="width: 100px;height: 30px;background: yellow;margin: 10px;">1</li>
+			<li style="width: 100px;height: 30px;background: yellow;margin: 10px;">2</li>
+			<li style="width: 100px;height: 30px;background: yellow;margin: 10px;">3</li>
+			<li style="width: 100px;height: 30px;background: yellow;margin: 10px;">4</li>
+			<li style="width: 100px;height: 30px;background: yellow;margin: 10px;">5</li>
+			<li style="width: 100px;height: 30px;background: yellow;margin: 10px;">6</li>
+		</ul>
+		<script>
+			;
+			(function() {
+				var oli = document.getElementsByTagName('li');
+				for (var i = 0; i < oli.length; i++) {
+					oli[i].index = i;
+					oli[i].onclick = function() {
+						alert('你点击的列表的下标是：' + this.index); //列表下标从0开始  
+					};
+				}
+			})();
+		</script>
+	</body>
+
+</html>
